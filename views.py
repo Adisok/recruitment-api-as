@@ -42,8 +42,8 @@ async def edit_msg(msg_id: PositiveInt, msg: schemas.EditMessage, db: Session = 
 
 
 @router.delete("/delete_msg/{msg_id}", status_code=204)
-async def delete_msg(msg_id: PositiveInt,auth: schemas.Message.Token, db: Session = Depends(get_db)):
-    check_auth(auth)
+async def delete_msg(msg_id: PositiveInt, auth: schemas.Message, db: Session = Depends(get_db)):
+    check_auth(auth.Token)
     db_msg = check_for_message(db, msg_id)
     crud.delete_message(db, msg_id)
     return PlainTextResponse("Deleted!")
