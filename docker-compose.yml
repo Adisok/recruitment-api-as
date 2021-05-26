@@ -4,6 +4,7 @@ services:
   postgres:
     image: postgres:13.0
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: DaftCode
     volumes:
       - ./dumps :/dumps
