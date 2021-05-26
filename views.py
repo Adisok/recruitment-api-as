@@ -43,7 +43,7 @@ async def delete_msg(msg_id: PositiveInt, db: Session = Depends(get_db)):
 @router.get("/info_msg/{msg_id}")    #licznik wyświetlen i wiadmosc
 async def info_msg(msg_id: PositiveInt, db: Session = Depends(get_db)):
     db_msg = check_for_message(db, msg_id)
-    crud.view_message(db, msg_id)
-    return "MSG"
+
+    return crud.view_message(db, msg_id)
 
 

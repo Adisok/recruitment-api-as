@@ -13,7 +13,7 @@ def create_message(db: Session, msg: schemas.Message):
     db_msg = models.Content(
         MessageID=msg_id,
         MessageText=msg.MessageText,
-        Counter=0
+        Counter=1
     )
     db.add(db_msg)
     db.commit()
@@ -23,9 +23,9 @@ def create_message(db: Session, msg: schemas.Message):
 
 def edit_message(db: Session, msg: schemas.Message, msg_id: int):
     new_vals = {key: val for key,val in dict(msg).items() if val is not None}
-    new_vals["Counter"] = 0
+    new_vals["Counter"] = 1
     if new_vals:
-        db.query(models.Content).filter(models.Content.SupplierID == msg_id).update(values=new_vals)
+        db.query(models.Content).filter(models.Content.MessageID == msg_id).update(values=new_vals)
     db.commit()
     pass
 
@@ -35,10 +35,11 @@ def delete_message(db: Session, msg_id: int):
     db.commit()
     pass
 
-def view_message(db, msg_id):
-    new_count = dict()
-    new_count["Counter"] = db.query(models.Content.Counter) + 1
-    db.query(models.Content).filter(models.Content.SupplierID == msg_id).update(values=new_count)
+
+def view_message(db: Session, msg_id: int):
+    counter = db.query(models.Content.Counter).filter(models.Content.MessageID == msg_id).first()[0] + 1
+    db.query(models.Content).filter(models.Content.MessageID == msg_id).update(values={"Counter": counter})
+    db.commit()
     return db.query(models.Content).filter(models.Content.MessageID == msg_id).first()
 
 
