@@ -1,0 +1,12 @@
+.idea
+.pytest_cache
+__pycache__
+venv
+.env
+local_db.txt
+Evox_zadanie_praktyki_2021.pdf
+models.py
+models2.py
+models3.py
+database.py
+crud.py

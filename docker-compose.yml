@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+  postgres:
+    image: postgres:13.0
+    environment:
+      POSTGRES_PASSWORD: DaftCode
+    volumes:
+      - ./dumps :/dumps
+    ports:
+      - "5432:5555"
+volumes:
+  postgres:
+
+
