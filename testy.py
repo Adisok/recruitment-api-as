@@ -4,6 +4,7 @@ import pytest
 import sqlite3
 
 client = TestClient(app)
+TOKEN = "BASIC 2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
 
 def test_testting():
     response = client.get("/")

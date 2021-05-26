@@ -1,7 +1,6 @@
 import models
 import schemas
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException
 
 
 def get_message(db, msg_id):
@@ -21,13 +20,12 @@ def create_message(db: Session, msg: schemas.Message):
     return db_msg
 
 
-def edit_message(db: Session, msg: schemas.Message, msg_id: int):
-    new_vals = {key: val for key,val in dict(msg).items() if val is not None}
-    new_vals["Counter"] = 1
+def edit_message(db: Session, msg: schemas.EditMessage, msg_id: int):
+    new_vals = {'MessageID': msg_id, 'MessageText': dict(msg)["Message"], 'Counter': 1}
     if new_vals:
         db.query(models.Content).filter(models.Content.MessageID == msg_id).update(values=new_vals)
     db.commit()
-    pass
+    return db.query(models.Content).filter(models.Content.MessageID == msg_id).first()
 
 
 def delete_message(db: Session, msg_id: int):
@@ -40,7 +38,8 @@ def view_message(db: Session, msg_id: int):
     counter = db.query(models.Content.Counter).filter(models.Content.MessageID == msg_id).first()[0] + 1
     db.query(models.Content).filter(models.Content.MessageID == msg_id).update(values={"Counter": counter})
     db.commit()
-    return db.query(models.Content).filter(models.Content.MessageID == msg_id).first()
+    data = db.query(models.Content).filter(models.Content.MessageID == msg_id).first()
+    return {"MessageText": data.MessageText, "Counter": data.Counter}
 
 
 

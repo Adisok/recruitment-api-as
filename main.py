@@ -1,17 +1,10 @@
-import os
-import sqlite3
 import hashlib
 import secrets
-from random import randint
-from pydantic import BaseModel
-from typing import Optional,Dict
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from datetime import datetime, timedelta, date
+from typing import Optional
 from views import router as messages_api_router
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from fastapi.responses import PlainTextResponse, RedirectResponse
-from fastapi import FastAPI, Response, status, Query, Request, HTTPException, Cookie, Header, Depends
+from fastapi.responses import PlainTextResponse
+from fastapi import FastAPI, Response, HTTPException, Depends
 
 app = FastAPI()
 security = HTTPBasic()
@@ -24,6 +17,7 @@ app.include_router(messages_api_router, tags=["messages"])
 @app.get("/")
 def root():
     return PlainTextResponse("Hello Daft!")
+
 
 @app.post("/token", status_code=201)
 def login_session(response: Response, credentials: HTTPBasicCredentials = Depends(security)):
