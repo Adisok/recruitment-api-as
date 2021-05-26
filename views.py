@@ -12,34 +12,38 @@ from database import get_db
 
 router = APIRouter()
 
-def check_for_supplier(db, supp_id):
-    is_supp = crud.get_supplier(db, supp_id)
+
+def check_for_message(db, msg_id):
+    is_supp = crud.get_supplier(db, msg_id)
     if is_supp is None:
         raise HTTPException(status_code=404, detail="Not Okie Dokie ID")
     return is_supp
 
 
-@router.get("/shippers/{shipper_id}", response_model=schemas.Shipper)
-async def get_shipper(shipper_id: PositiveInt, db: Session = Depends(get_db)):
-    db_shipper = crud.get_shipper(db, shipper_id)
-    if db_shipper is None:
-        raise HTTPException(status_code=404, detail="Shipper not found")
-    return db_shipper
+@router.post("/create_msg", response_model=schemas.Message, status_code=201)
+async def creat_msg(msg: schemas.Message, db: Session = Depends(get_db)):
+    return crud.create_message(db, msg)
 
-@router.get("/create_msg")
-async def creat_msg(msg: constr(max_length=160), db: Session = Depends(get_db)):
-    pass
 
-@router.put("/edit_msg/{msg_id}") #licznik wyswietlen = 0
-async def edit_msg(msg_id: PositiveInt, db: Session = Depends(get_db)):
-    pass
+@router.put("/edit_msg/{msg_id}",response_model=schemas.Message, status_code=201) #licznik wyswietlen = 0
+async def edit_msg(msg_id: PositiveInt, msg: schemas.Message, db: Session = Depends(get_db)):
+    db_msg = crud.get_message(db, msg_id)
+    if db_msg is None:
+        raise HTTPException(status_code=404, detail= "Msg not found")
+    return crud.edit_message(db, msg, msg_id)
+
 
 @router.delete("/delete_msg/{msg_id}")
 async def delete_msg(msg_id: PositiveInt, db: Session = Depends(get_db)):
-    pass
+    db_msg = check_for_message(db, msg_id)
+    crud.delete_message(db, msg_id)
+    return Response(status_code=204)
+
 
 @router.get("/info_msg/{msg_id}")    #licznik wyświetlen i wiadmosc
 async def info_msg(msg_id: PositiveInt, db: Session = Depends(get_db)):
-    pass
+    db_msg = check_for_message(db, msg_id)
+    crud.view_message(db, msg_id)
+    return "MSG"
 
 
