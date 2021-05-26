@@ -14,7 +14,7 @@ router = APIRouter()
 
 
 def check_for_message(db, msg_id):
-    is_supp = crud.get_supplier(db, msg_id)
+    is_supp = crud.get_message(db, msg_id)
     if is_supp is None:
         raise HTTPException(status_code=404, detail="Not Okie Dokie ID")
     return is_supp

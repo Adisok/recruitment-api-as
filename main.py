@@ -8,7 +8,7 @@ from typing import Optional,Dict
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta, date
-#from views import router as northwind_api_router
+from views import router as messages_api_router
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.responses import PlainTextResponse, RedirectResponse
 from fastapi import FastAPI, Response, status, Query, Request, HTTPException, Cookie, Header, Depends
@@ -19,7 +19,7 @@ app.api_token: Optional[str] = None
 app.secret_code = ["It ain't much", " but it's honest work"]
 app.username = "Daft_user"
 app.password = "Daft_Password"
-
+app.include_router(messages_api_router, tags=["messages"])
 
 @app.get("/")
 def root():
