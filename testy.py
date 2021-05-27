@@ -7,7 +7,7 @@ from starlette.testclient import TestClient
 
 client = TestClient(app)
 TOKEN = "BASIC2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
-TEST_IDE = 0
+TEST_ID = 0
 
 
 def test_testing():
@@ -24,37 +24,37 @@ def test_auth():
 
 
 def test_creat_message():
-    global TEST_IDE
+    global TEST_ID
     test_request = {
         "MessageText": "string",
         "Token": "BASIC2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
     }
     response = client.post("/create_msg", json=test_request)
-    TEST_IDE = response.json()["MessageID"]
-    print(TEST_IDE)
+    TEST_ID = response.json()["MessageID"]
+    print(TEST_ID)
     assert response.json()["MessageText"] == "string"
 
 
 def test_get_message():
-    global TEST_IDE
-    response = client.get(f"/info_msg/{TEST_IDE}")
+    global TEST_ID
+    response = client.get(f"/info_msg/{TEST_ID}")
     assert response.json()["MessageText"] == "string"
     assert response.status_code == 200
 
 
 def test_edit_message():
-    global TEST_IDE
+    global TEST_ID
     test_edit = {
         "Message": "string",
         "Token": "BASIC2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
     }
-    response = client.put(f"/edit_msg/{TEST_IDE}", json=test_edit)
+    response = client.put(f"/edit_msg/{TEST_ID}", json=test_edit)
     assert response.status_code == 201
     assert response.json()["MessageText"] == "string"
 
 
 def test_delete_message():
-    global TEST_IDE
-    response = client.delete(f"/delete_msg/{TEST_IDE}", params={"auth": TOKEN})
+    global TEST_ID
+    response = client.delete(f"/delete_msg/{TEST_ID}", params={"auth": TOKEN})
     assert response.text == "Deleted!"
     assert response.status_code == 204
