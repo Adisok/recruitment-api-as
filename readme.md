@@ -62,6 +62,7 @@ requests.get(f{ Link do API /info_msg/{TEST_ID}")
 ##API Deploy
 Api zdeployowano na heroku. Połączono heroku z moim repo na githubie automatycznie aktualizując API przy każdym commicie na githubie. 
 Bazę danych danych najpierw ręcznie stowrzono lokalnie po czym wrzucono na githuba dumpa, który został użyty do backupa bazy danych na heroku.
+
 ##BAZA DANYCH
 TABEL: content
 ROWS : MessageID | MessageText | Counter
