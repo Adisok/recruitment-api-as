@@ -30,4 +30,4 @@ def login_session(response: Response, credentials: HTTPBasicCredentials = Depend
         app.api_token = hashlib.sha256(f"{app.secret_code[0]}{app.username}:"
                                        f"{app.password}{app.secret_code[1]}".encode()).hexdigest()
         response.set_cookie(key="api_token", value=f"{app.api_token}")
-        return {"api_token": f"BASIC {app.api_token}"}
+        return {"api_token": f"BASIC{app.api_token}"}

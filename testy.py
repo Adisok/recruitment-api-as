@@ -1,20 +1,60 @@
 from fastapi.testclient import TestClient
 from main import app
 import pytest
-import sqlite3
+from starlette.testclient import TestClient
+
+
 
 client = TestClient(app)
-TOKEN = "BASIC 2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
+TOKEN = "BASIC2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
+TEST_IDE = 0
 
-def test_testting():
+
+def test_testing():
     response = client.get("/")
     assert response.status_code == 200
     assert response.text == "Hello Daft!"
 
 
 def test_auth():
-    test_api_token = "BASIC 2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
+    test_api_token = TOKEN
     response = client.post("/token", auth=("Daft_user", "Daft_Password"))
     assert response.status_code == 201
     assert response.json()["api_token"] == test_api_token
 
+
+def test_creat_message():
+    global TEST_IDE
+    test_request = {
+        "MessageText": "string",
+        "Token": "BASIC2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
+    }
+    response = client.post("/create_msg", json=test_request)
+    TEST_IDE = response.json()["MessageID"]
+    print(TEST_IDE)
+    assert response.json()["MessageText"] == "string"
+
+
+def test_get_message():
+    global TEST_IDE
+    response = client.get(f"/info_msg/{TEST_IDE}")
+    assert response.json()["MessageText"] == "string"
+    assert response.status_code == 200
+
+
+def test_edit_message():
+    global TEST_IDE
+    test_edit = {
+        "Message": "string",
+        "Token": "BASIC2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
+    }
+    response = client.put(f"/edit_msg/{TEST_IDE}", json=test_edit)
+    assert response.status_code == 201
+    assert response.json()["MessageText"] == "string"
+
+
+def test_delete_message():
+    global TEST_IDE
+    response = client.delete(f"/delete_msg/{TEST_IDE}", params={"auth": TOKEN})
+    assert response.text == "Deleted!"
+    assert response.status_code == 204
