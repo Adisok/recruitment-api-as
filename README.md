@@ -5,26 +5,30 @@ https://recruitment-app-as.herokuapp.com/
 ## POST /token 
 Wykorzystuje metodę post do Basic Auth, który generuje token uwierzytelniający, dla użytkownika, następnie trzeba ten Token podawać przy tworzeniu, edycji i kasowaniu wiadomości.
 W zapytaniu należy zawrzeć nazwę użytkownika i hasło, obecnie jest zdefiniowany tylko jeden użytkownik :
+```python
 requests.post("Link do API /token", auth=("Daft_user", "Daft_Password"))
-
+```
 Co Zwróci:
+```json
 "api_token": "BASIC2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
-
+```
 ## POST /create_msg
 Endpoint służący do tworzenia wiadomości. Przyjmuje jsona o następującym formacie:
+```json
 {
     "MessageText": "string",
     "Token": "BASIC2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
 }
-
+```
 I zwraca następującego jsona:
+```json
 {
   "MessageID": 1,
   "MessageText": "string",
   "Counter": 1,
   "Token": NULL
 }
-
+```
 Przykładowe zapytanie:
 ```python
 requests.put(f" Link do API /edit_msg/{TEST_ID}", json=test_edit)
@@ -33,20 +37,21 @@ requests.put(f" Link do API /edit_msg/{TEST_ID}", json=test_edit)
 
 ## PUT /edit_msg/{msg_id}
 Metoda służy do edycji wiadomości. Należy podać msg_id (ID wiadomości) oraz następującego jsona:
-
+```json
 {
   "Message": "string",
   "Token": "BASIC2cd452177e024c2ef774ab7e7a37254ee4479d81984eb06d7b18d96c0dbf9cfc"
 }
-
+```
 Co zwróci:
+```json
 {
   "MessageID": 1,
   "MessageText": "string",
   "Counter": 1,
   "Token": NULL
 }
-
+```
 Przykładowe zapytanie:
 ```python
 requests.put(f" Link do API /edit_msg/{TEST_ID}", json=test_edit)
@@ -70,4 +75,5 @@ Bazę danych danych najpierw ręcznie stworzono lokalnie po czym wrzucono na git
 
 ## BAZA DANYCH
 TABEL: content
+
 ROWS : MessageID | MessageText | Counter
